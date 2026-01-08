@@ -1,0 +1,12 @@
+.traffic_venv/
+
+datasets/VNTS/train/
+datasets/VNTS/val/
+
+
+models/signs/untouch/
+
+SanityCheck/
+__pycache__/
+outputs_vids/
+.vscode/
