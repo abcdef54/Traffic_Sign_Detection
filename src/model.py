@@ -24,6 +24,7 @@ class TensorRTSliceModel:
         self.frame_count = 0
         
         self.imgsz = 1280 
+        self.slice_imgsz = 640
         
         self.slice_inference = slice_inference
         self.slice_interval = slice_interval
@@ -48,7 +49,7 @@ class TensorRTSliceModel:
             self.ped_model = self._load_model(self.ped_model_path)
             print(f"[INFO] Dual-Core Loaded: {self.ped_model_path}")
 
-        slice_wh = (self.imgsz, self.imgsz)
+        slice_wh = (self.slice_imgsz, self.slice_imgsz)
         overlap_wh = (
             int(slice_wh[0] * overlap_ratio[0]), 
             int(slice_wh[1] * overlap_ratio[1])
@@ -98,7 +99,7 @@ class TensorRTSliceModel:
         print(f"[CONTROL] Slice Inference: {status}")
 
     def _slice_callback(self, image_slice: np.ndarray) -> sv.Detections:
-        result = self.sign_model(image_slice, verbose=False, conf=self.conf, imgsz=self.imgsz)[0]
+        result = self.sign_model(image_slice, verbose=False, conf=self.conf, imgsz=self.slice_imgsz)[0]
         return sv.Detections.from_ultralytics(result)
 
     def __call__(self, frame: np.ndarray | list[np.ndarray]) -> sv.Detections:
@@ -113,7 +114,7 @@ class TensorRTSliceModel:
         
         ped_detections = None
         if self.dual_core and self.ped_model:
-            ped_result = self.ped_model(frame, verbose=False, conf=self.conf, imgsz=self.imgsz // 2)[0]
+            ped_result = self.ped_model(frame, verbose=False, conf=self.conf, imgsz=self.slice_imgsz)[0]
             ped_det = sv.Detections.from_ultralytics(ped_result)
             
             target_ids = [0, 1, 2, 5, 7]

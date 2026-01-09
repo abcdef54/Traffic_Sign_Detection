@@ -7,7 +7,7 @@ import os
 
 from src import PredictionStabilizer, MultithreadVideoCapture, TensorRTSliceModel, ThreadedVideoWriter
 
-DEFAULT_SIGN_MODEL = "models/signs/best.engine"
+DEFAULT_SIGN_MODEL = "models/signs/best_dynamic.engine"
 DEFAULT_ONNX = "models/signs/best.onnx"
 DEFAULT_PT = "models/signs/best.pt"
 DEFAULT_INPUT      = "outputs_vids/fix_2mins.mp4"
@@ -121,7 +121,7 @@ def parse_args():
     parser.add_argument("--no-slice", action="store_false", dest="slice", help="Disable image slicing")
     parser.set_defaults(slice=True) 
     parser.add_argument("--slice-interval", type=int, default=5, help="Slice every N frames")
-    parser.add_argument("--overlap", type=float, default=0.2, help="Overlap ratio")
+    parser.add_argument("--overlap", type=float, default=0.0, help="Overlap ratio")
     
     parser.add_argument("--conf-detect", type=float, default=0.1, help="Detection Confidence")
     parser.add_argument("--conf-track", type=float, default=0.55, help="Tracking Confidence")
