@@ -40,7 +40,7 @@ class CustomAlbumentations(UAlbumentations):
     def __init__(self, p=1.0, **kwargs):
         super().__init__(p)
         self.transform = get_custom_transform(p=1.0)
-        print("[INFO] ✅ Production-Grade Traffic Augmentations Injected")
+        print("[INFO] Production-Grade Traffic Augmentations Injected")
 
 
 ultralytics.data.augment.Albumentations = CustomAlbumentations
